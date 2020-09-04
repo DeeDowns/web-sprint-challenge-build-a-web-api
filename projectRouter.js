@@ -36,6 +36,24 @@ router.get('/:id', validateProjectId, (req, res) => {
 //    })
 })
 
+//GET all actions by project id
+router.get('/:id/actions', validateProjectId, validateProjectActions, (req, res) => {
+    res.status(200).json(req.projectActions)
+    
+
+    // const { id: project_id } = req.params
+
+    // Projects.getProjectActions(project_id)
+    // .then(projectActions => {
+    //     console.log(projectActions)
+    //     res.status(200).json(projectActions)
+    // })
+    // .catch(error => {
+    //     console.log(error)
+    //     res.status(500).json({ message: 'error fetching project actions' })
+    // })
+})
+
 //POST new project
 router.post('/', validateProject, (req, res) => {
     const { name, description, completed } = req.body
@@ -108,6 +126,25 @@ function validateProject(req, res, next) {
     } else {
        next()
     }
+}
+
+function validateProjectActions(req, res, next) {
+    const { id: project_id } = req.params
+
+    Projects.getProjectActions(project_id)
+    .then(projectActions => {
+        console.log(projectActions)
+        req.projectActions = projectActions
+        if(projectActions.length === 0) {
+            res.status(404).json({ message: 'this project has no actions'})
+        } else {
+            next()
+        }
+    })
+    .catch(error => {
+        console.log(error)
+        res.status(500).json({ message: 'error fetching project actions' })
+    })
 }
 
 
