@@ -2,6 +2,7 @@ const express = require('express')
 
 const Actions = require('./data/helpers/actionModel')
 const { json } = require('express')
+const { del } = require('./data/dbConfig')
 
 const router = express.Router()
 
@@ -61,6 +62,19 @@ router.put('/:id', validateActionId, (req, res) => {
 })
 
 //DELETE action
+router.delete('/:id', validateActionId, (req, res) => {
+    const { id } = req.params
+
+    Actions.remove(id) 
+    .then(deletedAction => {
+        console.log(deletedAction)
+        res.status(200).json({ message: 'action has been removed'})
+    })
+    .catch(error => {
+        console.log(error)
+        res.status(500).json({ message: 'error removing action'})
+    })
+})
 
 
 /******* Middleware *******/
