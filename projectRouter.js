@@ -51,6 +51,22 @@ router.post('/', validateProject, (req, res) => {
     })
 })
 
+//PUT update project
+router.put('/:id', validateProjectId, validateProject, (req, res) => {
+    const { id } = req.params
+    const { name, description, completed} = req.body
+
+    Projects.update(id, {name, description, completed}) 
+    .then(updatedProject => {
+        console.log(updatedProject)
+        res.status(200).json(updatedProject)
+    })
+    .catch(error => {
+        console.log(error)
+        res.status(500).json({ message: 'error updating post' })
+    }) 
+})
+
 
 
 /********* Middleware ********/
