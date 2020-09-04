@@ -67,6 +67,21 @@ router.put('/:id', validateProjectId, validateProject, (req, res) => {
     }) 
 })
 
+//DELETE project
+router.delete('/:id', validateProjectId, (req, res) => {
+    const { id } = req.params
+
+    Projects.remove(id) 
+    .then(removedPost => {
+        console.log(removedPost)
+        res.status(200).json({ message: 'project has been removed' })
+    })
+    .catch(error => {
+        console.log(error)
+        res.status(500).json({ message: 'error removing project' })
+    })
+})
+
 
 
 /********* Middleware ********/
