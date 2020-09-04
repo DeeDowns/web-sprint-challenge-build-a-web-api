@@ -25,9 +25,8 @@ router.get('/', (req, res) => {
 router.get('/:id', validateActionId, (req, res) => {
     res.status(200).json(req.action)
    
-   
+    // WITHOUT MIDDLEWARE
     //     const { id } = req.params
-
     //     Actions.get(id) 
     //     .then(action => {
     //         console.log(action)

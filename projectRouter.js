@@ -7,9 +7,8 @@ const router = express.Router()
 
 //GET all projects
 router.get('/', (req, res) => {
-    // res.send(`<h1>project upppp</h2>`)
     const { id } = req.params
-   Projects.get()
+    Projects.get()
    .then(projects => {
        console.log(projects)
        res.status(200).json(projects)
@@ -24,26 +23,25 @@ router.get('/', (req, res) => {
 router.get('/:id', validateProjectId, (req, res) => {
     res.status(200).json(req.project)
 
-
-//    const { id } = req.params
-//    Projects.get(id)
-//    .then(project => {
-//        console.log(project)
-//        res.status(200).json(project)
-//    })
-//    .catch(error => {
-//        console.log(error)
-//        res.status(500).json({ message: 'error fetching project' })
-//    })
+    // WITHOUT MIDDLEWARE
+    //    const { id } = req.params
+    //    Projects.get(id)
+    //    .then(project => {
+    //        console.log(project)
+    //        res.status(200).json(project)
+    //    })
+    //    .catch(error => {
+    //        console.log(error)
+    //        res.status(500).json({ message: 'error fetching project' })
+    //    })
 })
 
 //GET all actions by project id
 router.get('/:id/actions', validateProjectId, validateProjectActions, (req, res) => {
     res.status(200).json(req.projectActions)
     
-
+     // WITHOUT MIDDLEWARE
     // const { id: project_id } = req.params
-
     // Projects.getProjectActions(project_id)
     // .then(projectActions => {
     //     console.log(projectActions)
@@ -138,7 +136,9 @@ function validateProjectId(req, res, next) {
 function validateProject(req, res, next) {
     const { name, description } = req.body 
     
-    if(name === '' || description === '') {
+    if(!req.body){
+        res.status(400).json({ message: 'missing project data'})
+    } else if(!name || !description) {
         res.status(400).json({ message: 'project must include name and description'})
     } else {
        next()
@@ -168,8 +168,10 @@ function validateAction(req, res, next) {
     const { id: project_id} = req.params
     const {description, notes } = req.body
 
-    if(description === '' || notes === '') {
-        res.status(400).json({ message: 'project must include notes and description'})
+    if(!req.body){
+        res.status(400).json({ message: 'missing action data'})
+    } else if(!notes || !description) {
+        res.status(400).json({ message: 'action must include notes and description'})
     } else {
        next()
     }
