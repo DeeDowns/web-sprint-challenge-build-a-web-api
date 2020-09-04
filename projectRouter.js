@@ -70,8 +70,8 @@ router.post('/', validateProject, (req, res) => {
     })
 })
 
-//POST add new action by project id
-router.post('/:id/actions', validateProjectId,  (req, res) => {
+//POST new action by project id
+router.post('/:id/actions', validateProjectId,  validateAction, (req, res) => {
     const { id: project_id} = req.params
     const {description, notes, completed } = req.body
 
@@ -162,6 +162,17 @@ function validateProjectActions(req, res, next) {
         console.log(error)
         res.status(500).json({ message: 'error fetching project actions' })
     })
+}
+
+function validateAction(req, res, next) {
+    const { id: project_id} = req.params
+    const {description, notes } = req.body
+
+    if(description === '' || notes === '') {
+        res.status(400).json({ message: 'project must include notes and description'})
+    } else {
+       next()
+    }
 }
 
 

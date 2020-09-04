@@ -44,6 +44,24 @@ router.get('/:id', validateActionId, (req, res) => {
 //just makes better sense in my head, since you would add by the post id
 
 
+//PUT edit action
+router.put('/:id', validateActionId, (req, res) => {
+    const { id } = req.params
+    const { description, notes, completed } = req.body
+
+    Actions.update(id, { description, notes, completed })
+    .then(updatedAction => {
+        console.log(updatedAction)
+        res.status(200).json(updatedAction)
+    })
+    .catch(error => {
+        console.log(error)
+        res.status(500).json({ message: 'error updating action' })
+    })
+})
+
+//DELETE action
+
 
 /******* Middleware *******/
 function validateActionId(req, res, next) {
