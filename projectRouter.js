@@ -1,6 +1,7 @@
 const express = require('express')
 
 const Projects = require('./data/helpers/projectModel.js')
+const Actions = require('./data/helpers/actionModel.js')
 
 const router = express.Router()
 
@@ -66,6 +67,22 @@ router.post('/', validateProject, (req, res) => {
     .catch(error => {
         console.log(error)
         res.status(500).json({ message: 'error adding new project' })
+    })
+})
+
+//POST add new action by project id
+router.post('/:id/actions', validateProjectId,  (req, res) => {
+    const { id: project_id} = req.params
+    const {description, notes, completed } = req.body
+
+    Actions.insert({project_id, description, notes, completed})
+    .then(newAction => {
+        console.log(newAction)
+        res.status(201).json(newAction)
+    })
+    .catch(error => {
+        console.log(error)
+        res.status(500).json({ message: 'error adding new action'})
     })
 })
 

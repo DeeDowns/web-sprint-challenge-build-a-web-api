@@ -25,18 +25,24 @@ router.get('/:id', validateActionId, (req, res) => {
     res.status(200).json(req.action)
    
    
-//     const { id } = req.params
+    //     const { id } = req.params
 
-//     Actions.get(id) 
-//     .then(action => {
-//         console.log(action)
-//         res.status(200).json(action)
-//     })
-//     .catch(error => {
-//         console.log(error)
-//         res.status(500).json({message: 'error fetching action' })
-//     })
+    //     Actions.get(id) 
+    //     .then(action => {
+    //         console.log(action)
+    //         res.status(200).json(action)
+    //     })
+    //     .catch(error => {
+    //         console.log(error)
+    //         res.status(500).json({message: 'error fetching action' })
+    //     })
 })
+
+//Endpoint to create new action is in projectRouter
+//the url to add a new post seems better to be /api/projects/:id/actions
+//rather than just /api/actions
+//just makes better sense in my head, since you would add by the post id
+
 
 
 /******* Middleware *******/
